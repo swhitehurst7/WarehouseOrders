@@ -4,6 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -63,9 +64,12 @@ public class Mainwindow extends JFrame {
 		public void actionPerformed (ActionEvent orderclicked) {
 			String command = orderclicked.getActionCommand();
 			switch (command) {
-			case "ORDERS" : statusLabel.setText("Java sucks");
+//			case "ORDERS" : statusLabel.setText("Java sucks");
+			case "ORDERS" : Orders ord = new Orders();
+			ord.showEvent();;
 			break;
-			case "ITEMS" : statusLabel.setText("Java rocks");
+			case "ITEMS" : Item itm = new Item();
+			itm.showEvent();;
 			break;
 			}
 		}

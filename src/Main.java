@@ -11,6 +11,11 @@ public class Main extends JFrame {
 Mainwindow wind = new Mainwindow();
 wind.prepareGUI();
 wind.showEvent();
+
+JDBC jdbc = new JDBC();
+jdbc.itemcatalogue();
+jdbc.ordercatalogue();
 	}
+	
 
 }

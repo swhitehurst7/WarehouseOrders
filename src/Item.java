@@ -1,62 +1,69 @@
+import java.awt.FlowLayout;
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.util.Arrays;
 
-public class Item {
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JButton;
 
-public String Name;	
-public String ProductID;
-//string - several letters and numbers derived from product name
-int Quantity = 0;
-//default quantity in stock, draw from database
-float Price;
-//float as only two decimal places
-String Location = "Row, shelf, code";
-//ordered locating system denotes position in warehouse
-boolean Removal = false;
-boolean PorousWare = false;
-//again, use check-boxes
+public class Item extends JFrame {
 
-public enum thisItem { Name, ProductID, Quantity, Price, Location, Removal, PorousWare}
+	private JFrame mainFrame;
+	private JLabel headerLabel;
+	private JLabel statusLabel;
+	private JPanel controlPanel;
 
-public String setname (String n){
-	return Name = n;
+public Item(){prepareGUI();}
+	
+	private void prepareGUI(){
+	mainFrame = new JFrame("Item catalogue");
+	//name of window
+	mainFrame.setSize(600, 600);
+	//window size
+	mainFrame.setLayout(new GridLayout(2, 1));
+	headerLabel = new JLabel("This is an item!",JLabel.CENTER);
+	statusLabel = new JLabel("Here are some stats!",JLabel.CENTER);
+	statusLabel.setSize(400, 100);
+	
+	mainFrame.addWindowListener(new WindowAdapter() {
+		public void windowClosing(WindowEvent windowEvent)
+		{
+			System.exit(0);
+			//window closes when 'x' is clicked
+		}
+	});
+	controlPanel = new JPanel();
+	controlPanel.setLayout(new FlowLayout());
+	mainFrame.add(headerLabel);
+	mainFrame.add(controlPanel);
+	mainFrame.add(statusLabel);
+	mainFrame.setVisible(true);
+	}
+void showEvent() {
+	headerLabel.setText("All the items we sell");
+//set header for top of window	
+	JButton ordersButton = new
+	JButton("ITEMS");
+	ordersButton.setActionCommand("ITEMS");
+	ordersButton.addActionListener(new BCL());
+	controlPanel.add(ordersButton);
+	mainFrame.setVisible(true);
 }
-public String getname (String name){
-	return name;
-}
-public String setProduct (String p) {
-	return ProductID=p;
+
+private class BCL implements ActionListener {
+	public void actionPerformed (ActionEvent ae) {
+		String command = ae.getActionCommand();
+		switch (command) {
+		case "ITEMS" : statusLabel.setText(Arrays.toString(CustomerOrder.OrderID));
+		break;
+
+		}	
 	}
-public String getProduct(String ID){
-	return ID;
-	}
-public int setquantity (int q) {
-	return Quantity=q;
-	}
-public int getquantity(int Quant){
-	return Quant;
-	}
-public float setprice (float £){
-	return Price=£;
-}
-public float getprice (float price){
-	return price;
-}
-public String setlocation (String l){
-	return Location=l;
-	}
-public String getlocation (String located) {
-	return located;
-	}
-public boolean setremoved (boolean r){
-	return Removal = r;
-	}
-public boolean getremoved (boolean removed){
-	return removed;
-	}
-public boolean setporous (boolean w){
-	return PorousWare = w;
-	}
-public boolean getporous (boolean porous){
-	return porous;
 	}
 }
 
