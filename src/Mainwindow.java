@@ -64,7 +64,7 @@ public class Mainwindow extends JFrame {
 		public void actionPerformed (ActionEvent orderclicked) {
 			String command = orderclicked.getActionCommand();
 			switch (command) {
-//			case "ORDERS" : statusLabel.setText("Java sucks");
+			//			case "ORDERS" : statusLabel.setText("Java sucks");
 			case "ORDERS" : Orders ord = new Orders();
 			ord.showEvent();;
 			break;
