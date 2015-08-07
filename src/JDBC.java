@@ -3,6 +3,7 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 
 
 public class JDBC {
@@ -15,16 +16,14 @@ public class JDBC {
 	//login details for mysql
 
 
-
-
-	public void itemcatalogue() {
+	public ArrayList<ItemData> itemcatalogue() {
+		ArrayList<ItemData> itemList = new ArrayList<>();
 		Connection conn = null;
 		Statement stmt = null;
 		try {
 			Class.forName( "com.mysql.jdbc.Driver");
 			System.out.println("Connecting to database...");
 			conn = DriverManager.getConnection(DB_URL, USER, PASS);
-
 
 			System.out.println("Creating item catalogue...");
 			stmt = conn.createStatement();
@@ -42,10 +41,9 @@ public class JDBC {
 				String located = rs.getString("Location");
 				boolean remove = rs.getBoolean("Removal");
 				boolean porous = rs.getBoolean("PorousWare");
-				String itemsout = ("ID: " + id + ", Name: " + name + ", Stock: " + stock + ", Price: " + price + ", Weight: " + weight + ", Dimensions: " + size + ", Manufacturer: " + madeby + ", Location: " + located + ", Removal: " + remove + ", PorousWare: " + porous);
-				System.out.println(itemsout);
-				//determines and subsequently displays all fields for table
-				String [] itemarray = {itemsout};	   
+				ItemData result = new ItemData(id, name, stock, price, weight, size, madeby, located, remove, porous);
+				itemList.add(result);
+				//determines and subsequently displays all fields for table  
 			}
 			rs.close();
 
@@ -66,10 +64,12 @@ public class JDBC {
 			}
 		}
 		System.out.println("Goodbye!");
+		return itemList;
 	}
 
 
-	public void ordercatalogue() {
+	public ArrayList<OrderData> ordercatalogue() {
+		ArrayList<OrderData> orderList = new ArrayList<>();
 		Connection conn = null;
 		Statement stmt = null;
 		try {
@@ -90,10 +90,11 @@ public class JDBC {
 				boolean checked = res.getBoolean("CheckedOut");
 				boolean picked = res.getBoolean("Picked");
 				boolean deliver = res.getBoolean("Delivered");
-				String orderout = ("OrderID: " + id + ", CustomerID: " + customer + ", OrderPlaced: " + date + ", OrderItems: " + items + ", Quantity: " + quant + ", CheckedOut: " + checked + ", Picked: " + picked + ", Delivered: " + deliver);
+				OrderData result = new OrderData(id, customer, date, items, quant, checked, picked, deliver);
+				orderList.add(result);
+				
 			}
 			res.close();
-
 
 		} catch (SQLException sqle) {
 			sqle.printStackTrace();
@@ -112,6 +113,7 @@ public class JDBC {
 			}
 		}
 		System.out.println("Goodbye!");
+		return orderList;
 	} 
 
 	public void customerorders() {
@@ -131,6 +133,7 @@ public class JDBC {
 				String productid = res.getString("ProductID");
 				String quant = res.getString("ProductQuantity");
 				System.out.println("OrderID: " + id + ", ProductID: " + productid + ", Quantity: " + quant);
+						
 			}
 			res.close();
 
@@ -152,5 +155,41 @@ public class JDBC {
 		}
 		System.out.println("Goodbye!");
 	} 
-}
 
+	public void updateorderspicked() {
+		Connection conn = null;
+		Statement stmt = null;
+		try {
+			Class.forName( "com.mysql.jdbc.Driver");
+			System.out.println("Connecting to database...");
+			conn = DriverManager.getConnection(DB_URL, USER, PASS);
+
+			System.out.println("Creating customer orders...");
+			stmt = conn.createStatement();
+			System.out.println("Updating orders picked...");
+			stmt = conn.createStatement();
+			String sql5 = "UPDATE orders " + "SET Picked = 1 WHERE OrderID in (1,2)";
+			stmt.executeUpdate(sql5);
+			}
+			res.close();
+
+		} catch (SQLException sqle) {
+			sqle.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (stmt != null)
+					conn.close();
+			} catch (SQLException se) { }
+			try {
+				if (conn != null)
+					conn.close();
+			} catch (SQLException se) {
+				se.printStackTrace();
+			}
+		}
+		System.out.println("Goodbye!");
+	} 
+	
+}

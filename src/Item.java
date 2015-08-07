@@ -76,8 +76,8 @@ public class Item extends JFrame {
 
 			String command = ae.getActionCommand();
 			switch (command) {
-			//		case "ITEMS" : statusLabel.setText(Arrays.toString(CustomerOrder.OrderID));
-			case "ITEMS" : statusLabel.setText("TEST");
+	//				case "ITEMS" : statusLabel.setText(Arrays.toString(CustomerOrder.OrderID));
+			case "ITEMS" : statusLabel.setText("Test");
 			break;
 
 			}	

@@ -17,6 +17,7 @@ public class ItemData {
 	boolean Removal = false;
 	boolean PorousWare = false;
 	//again, use check-boxes
+	
 
 	public class itemfields {
 
@@ -82,11 +83,32 @@ public class ItemData {
 		}
 
 	}
-	
-	public class itemdata{
-	
-		// String itemdata = ("ID: " + id + ", Name: " + name + ", Stock: " + stock + ", Price: " + price + ", Weight: " + weight + ", Dimensions: " + size + ", Manufacturer: " + madeby + ", Location: " + located + ", Removal: " + remove + ", PorousWare: " + porous);
-		
+
+	public ItemData(String productID, String productName, int stock, float price, int weight, String dimensions, String manufacturer, String location, boolean removal, boolean porousWare){
+
+		this.ProductID = productID;
+		this.ProductName = productName;
+		this.Stock = stock;
+		this.Price = price;
+		this.Weight = weight;
+		this.Dimensions = dimensions;
+		this.Manufacturer = manufacturer;
+		this.Location = location;
+		this.Removal = removal;
+		this.PorousWare = porousWare;
+
+		System.out.println("------------------------------");
+		System.out.println(ProductID);
+		System.out.println(ProductName);
+		System.out.println(Stock);
+		System.out.println(Price);
+		System.out.println(Weight);
+		System.out.println(Dimensions);
+		System.out.println(Manufacturer);
+		System.out.println(Location);
+		System.out.println(Removal);
+		System.out.println(PorousWare);
+		System.out.println("------------------------------");
 	}
 
-	}
+}
