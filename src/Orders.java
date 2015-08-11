@@ -6,6 +6,9 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.Arrays;
+
+import javax.swing.DefaultListModel;
+import javax.swing.DefaultListSelectionModel;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
@@ -21,20 +24,24 @@ public class Orders extends JFrame {
 	private JLabel headerLabel;
 	private JList orderList;
 	private JPanel controlPanel;
-
 	//instantiate GUI imports
+
+	DefaultListModel<String> listModel = new DefaultListModel();
+	//	m.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+	//	m.setLeadAnchorNotificationEnabled(false);
+	//	list.setSelectionModel(m);
 
 	public Orders(){prepareGUI();}
 
 	void prepareGUI(){
 		mainFrame = new JFrame("Orders");
 		//name of window
-		mainFrame.setSize(600, 600);
+		mainFrame.setSize(1000, 600);
 		//window size
 		mainFrame.setLayout(new GridLayout(3, 1));
 		headerLabel = new JLabel("",JLabel.CENTER);
 
-		orderList = new JList();
+		orderList = new JList<String>(listModel);
 		orderList.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
 		orderList.setLayoutOrientation(JList.HORIZONTAL_WRAP);
 		orderList.setVisibleRowCount(-1);
@@ -60,27 +67,38 @@ public class Orders extends JFrame {
 
 	void showEvent() {
 		headerLabel.setText("Incoming Order Forms");
-		//set header for top of window	
-		//	JButton ordersButton = new
-		//	JButton("Orders");
-		//	ordersButton.setActionCommand("ORDERS");
-		//	ordersButton.addActionListener(new BCL());
-		//	controlPanel.add(ordersButton);
+		//	set header for top of window	
+		JButton ordersButton = new
+				JButton("Show unfulfilled orders");
+		ordersButton.setActionCommand("ORDERS");
+		ordersButton.addActionListener(new BCL());
+		controlPanel.add(ordersButton);
 
 		mainFrame.setVisible(true);
 	}
-	/*
-private class BCL implements ActionListener {
-	public void actionPerformed (ActionEvent ae) {
-		String command = ae.getActionCommand();
-		switch (command) {
-//		case "ORDERS" : statusLabel.setText(Arrays.toString(CustomerOrder.OrderID));
-		case "ORDERS" : orderList.setText(Arrays.toString(CustomerOrder.OrderID));
 
-		break;
+	private class BCL implements ActionListener {
+		public void actionPerformed (ActionEvent ae) {
+			String command = ae.getActionCommand();
+			switch (command) {
+			//		case "ORDERS" : statusLabel.setText(Arrays.toString(CustomerOrder.OrderID));
+			case "ORDERS" : displayorders();
 
-		}	
+			break;
+
+			}	
+		}
 	}
+
+	public void displayorders()
+	{JDBC jdbc = new JDBC();
+	jdbc.ordercatalogue();
+	DefaultListModel<String> listModel = (DefaultListModel<String>) orderList.getModel();
+	listModel.clear();
+
+	for (String orderliststring: jdbc.ordercatalogue())
+	{
+		listModel.addElement(orderliststring);
 	}
-	 */
+	}	 
 }

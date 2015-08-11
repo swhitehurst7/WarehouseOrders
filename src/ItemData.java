@@ -4,7 +4,7 @@ public class ItemData {
 	public String ProductID;
 	//string - several letters and numbers derived from product name
 	public String ProductName;	
-	int Stock = 0;
+	static int Stock;
 	//default quantity in stock, draw from database
 	float Price;
 	//float as only two decimal places
@@ -14,10 +14,9 @@ public class ItemData {
 	String Manufacturer = "Company, Address";
 	String Location = "Row, shelf, code";
 	//ordered locating system denotes position in warehouse
-	boolean Removal = false;
-	boolean PorousWare = false;
+	boolean Removal;
+	boolean PorousWare;
 	//again, use check-boxes
-	
 
 	public class itemfields {
 

@@ -1,16 +1,16 @@
 public class OrderData {
 
-	int OrderID;
+	static int OrderID;
 	//just a number, probably refresh every day
-	String CustomerID;
+	static String CustomerID;
 	//initials and number code
-	String OrderPlaced;
-	//date and time in the format YYYY-MM-DD HH:MM
-	String OrderItems;
-	int Quantity;
-	boolean CheckedOut = false;
-	boolean Picked = false;
-	boolean Delivered = false;
+	static String OrderPlaced;
+	//date and time in the format YYYY-MM-DD HH:MM:SS
+	static String OrderItems;
+	static int Quantity;
+	static boolean CheckedOut;
+	static boolean Picked;
+	static boolean Delivered;
 	//check-boxes to show status
 
 	public class orderfields{
@@ -76,7 +76,7 @@ public class OrderData {
 		this.CheckedOut = checkedOut;
 		this.Picked = picked;
 		this.Delivered = delivered;
-		
+
 		System.out.println("------------------------------");
 		System.out.println(OrderID);
 		System.out.println(CustomerID);

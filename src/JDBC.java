@@ -5,7 +5,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
-
 public class JDBC {
 
 	static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
@@ -16,8 +15,9 @@ public class JDBC {
 	//login details for mysql
 
 
-	public ArrayList<ItemData> itemcatalogue() {
+	public ArrayList<String> itemcatalogue() {
 		ArrayList<ItemData> itemList = new ArrayList<>();
+		ArrayList<String> itemliststring = new ArrayList<String>(0);
 		Connection conn = null;
 		Statement stmt = null;
 		try {
@@ -43,6 +43,8 @@ public class JDBC {
 				boolean porous = rs.getBoolean("PorousWare");
 				ItemData result = new ItemData(id, name, stock, price, weight, size, madeby, located, remove, porous);
 				itemList.add(result);
+				String itemstring = "Product ID: " + id + " Product Name: " + name + " Stock: " + Integer.toString(stock) + " Price: " + Float.toString(price) + " Weight: " + Integer.toString(weight) + " Dimensions: " + size + " Manufacturer: " + madeby + " Location in Warehouse: " + located + " For removal? " + Boolean.toString(remove) + " Porous Ware? " + Boolean.toString(porous);
+				itemliststring.add(itemstring);
 				//determines and subsequently displays all fields for table  
 			}
 			rs.close();
@@ -64,12 +66,12 @@ public class JDBC {
 			}
 		}
 		System.out.println("Goodbye!");
-		return itemList;
+		return itemliststring;
 	}
 
-
-	public ArrayList<OrderData> ordercatalogue() {
+	public ArrayList<String> ordercatalogue() {
 		ArrayList<OrderData> orderList = new ArrayList<>();
+		ArrayList<String> orderliststring = new ArrayList<String>(0);
 		Connection conn = null;
 		Statement stmt = null;
 		try {
@@ -92,7 +94,9 @@ public class JDBC {
 				boolean deliver = res.getBoolean("Delivered");
 				OrderData result = new OrderData(id, customer, date, items, quant, checked, picked, deliver);
 				orderList.add(result);
-				
+				String orderstring = "OrderID: " + Integer.toString(id) + " CustomerID: " + customer + " Date placed: " + date + " Items: " + items + " Quantities: " + Integer.toString(quant) + " Checked Out? " + Boolean.toString(checked) + " Picked? " + Boolean.toString(picked) + " Delivered? " + Boolean.toString(deliver);
+				orderliststring.add(orderstring);
+
 			}
 			res.close();
 
@@ -113,31 +117,25 @@ public class JDBC {
 			}
 		}
 		System.out.println("Goodbye!");
-		return orderList;
+		return orderliststring;
 	} 
 
-	public void customerorders() {
+	public void createcustomerorder(){
 		Connection conn = null;
 		Statement stmt = null;
 		try {
 			Class.forName( "com.mysql.jdbc.Driver");
-			System.out.println("Connecting to database...");
 			conn = DriverManager.getConnection(DB_URL, USER, PASS);
 
-			System.out.println("Creating customer orders...");
+			System.out.println("Inserting records into the table...");
 			stmt = conn.createStatement();
-			String sql4 = "SELECT OrderID, ProductID, ProductQuantity FROM customerOrder";
-			ResultSet res = stmt.executeQuery(sql4);
-			while (res.next()) {
-				int id = res.getInt("OrderID");
-				String productid = res.getString("ProductID");
-				String quant = res.getString("ProductQuantity");
-				System.out.println("OrderID: " + id + ", ProductID: " + productid + ", Quantity: " + quant);
-						
-			}
-			res.close();
-
-		} catch (SQLException sqle) {
+			stmt.executeUpdate ("INSERT INTO customerorder " + "VALUES (1, 'GNO1', 2)");
+			stmt.executeUpdate ("INSERT INTO customerorder " + "VALUES (1, 'PON2', 1)");
+			stmt.executeUpdate ("INSERT INTO customerorder " + "VALUES (2, 'HAM1', 3)");
+			stmt.executeUpdate ("INSERT INTO customerorder " + "VALUES (2, 'GNO1', 1)");
+			System.out.println("Created customer orders...");
+		}
+		catch (SQLException sqle) {
 			sqle.printStackTrace();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -153,7 +151,71 @@ public class JDBC {
 				se.printStackTrace();
 			}
 		}
-		System.out.println("Goodbye!");
+	}
+	
+	public void createstockorder(){
+		Connection conn = null;
+		Statement stmt = null;
+		try {
+			Class.forName( "com.mysql.jdbc.Driver");
+			conn = DriverManager.getConnection(DB_URL, USER, PASS);
+
+			System.out.println("Formulating stock order...");
+			stmt = conn.createStatement();
+			stmt.executeUpdate ("INSERT INTO stockorder " + "VALUES ('GNO1', 'Gnome Inc.', 20)");
+			stmt.executeUpdate ("INSERT INTO stockorder " + "VALUES ('HAM1', 'Hammock Hut', 30)");
+			stmt.executeUpdate ("INSERT INTO stockorder " + "VALUES ('PON2', 'Pond Factory', 10)");
+			System.out.println("Created stock orders...");
+		}
+		catch (SQLException sqle) {
+			sqle.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (stmt != null)
+					conn.close();
+			} catch (SQLException se) { }
+			try {
+				if (conn != null)
+					conn.close();
+			} catch (SQLException se) {
+				se.printStackTrace();
+			}
+		}
+	}
+	
+	public void updateorderschecked() {
+		Connection conn = null;
+		Statement stmt = null;
+		try {
+			Class.forName( "com.mysql.jdbc.Driver");
+			conn = DriverManager.getConnection(DB_URL, USER, PASS);
+
+			stmt = conn.createStatement();
+			System.out.println("Updating orders checked out...");
+			stmt = conn.createStatement();
+			String sql4 = "UPDATE orders " + "SET CheckedOut = 1 WHERE OrderID in (1,2)";
+			stmt.executeUpdate(sql4);
+
+		}
+		catch (SQLException sqle) {
+			sqle.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (stmt != null)
+					conn.close();
+			} catch (SQLException se) { }
+			try {
+				if (conn != null)
+					conn.close();
+			} catch (SQLException se) {
+				se.printStackTrace();
+			}
+		}
+		System.out.println("Checked out!");
 	} 
 
 	public void updateorderspicked() {
@@ -161,19 +223,16 @@ public class JDBC {
 		Statement stmt = null;
 		try {
 			Class.forName( "com.mysql.jdbc.Driver");
-			System.out.println("Connecting to database...");
 			conn = DriverManager.getConnection(DB_URL, USER, PASS);
 
-			System.out.println("Creating customer orders...");
 			stmt = conn.createStatement();
 			System.out.println("Updating orders picked...");
 			stmt = conn.createStatement();
 			String sql5 = "UPDATE orders " + "SET Picked = 1 WHERE OrderID in (1,2)";
 			stmt.executeUpdate(sql5);
-			}
-			res.close();
 
-		} catch (SQLException sqle) {
+		}
+		catch (SQLException sqle) {
 			sqle.printStackTrace();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -189,7 +248,106 @@ public class JDBC {
 				se.printStackTrace();
 			}
 		}
-		System.out.println("Goodbye!");
+		System.out.println("Picked!");
 	} 
-	
+
+	public void updateordersdelivered() {
+		Connection conn = null;
+		Statement stmt = null;
+		try {
+			Class.forName( "com.mysql.jdbc.Driver");
+			conn = DriverManager.getConnection(DB_URL, USER, PASS);
+
+			stmt = conn.createStatement();
+			System.out.println("Updating orders delivered...");
+			stmt = conn.createStatement();
+			String sql6 = "UPDATE orders " + "SET Delivered = 1 WHERE OrderID in (1,2)";
+			stmt.executeUpdate(sql6);
+
+		}
+		catch (SQLException sqle) {
+			sqle.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (stmt != null)
+					conn.close();
+			} catch (SQLException se) { }
+			try {
+				if (conn != null)
+					conn.close();
+			} catch (SQLException se) {
+				se.printStackTrace();
+			}
+		}
+		System.out.println("Delivered!");
+	} 
+
+	public void updateitemremoval() {
+		Connection conn = null;
+		Statement stmt = null;
+		try {
+			Class.forName( "com.mysql.jdbc.Driver");
+			conn = DriverManager.getConnection(DB_URL, USER, PASS);
+
+			stmt = conn.createStatement();
+			System.out.println("Updating items removed...");
+			stmt = conn.createStatement();
+			String sql7 = "UPDATE items SET Removal = 0 WHERE ProductID = 'GNO1,HAM1,PON2'";
+			stmt.executeUpdate(sql7);
+
+		}
+		catch (SQLException sqle) {
+			sqle.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (stmt != null)
+					conn.close();
+			} catch (SQLException se) { }
+			try {
+				if (conn != null)
+					conn.close();
+			} catch (SQLException se) {
+				se.printStackTrace();
+			}
+		}
+		System.out.println("Removed!");
+	} 
+
+	public void updateitemporous() {
+		Connection conn = null;
+		Statement stmt = null;
+		try {
+			Class.forName( "com.mysql.jdbc.Driver");
+			conn = DriverManager.getConnection(DB_URL, USER, PASS);
+
+			stmt = conn.createStatement();
+			System.out.println("Updating porous items...");
+			stmt = conn.createStatement();
+			String sql8 = "UPDATE items SET PorousWare = 0 WHERE ProductID = 'GNO1,HAM1,PON2'";
+			stmt.executeUpdate(sql8);
+
+		}
+		catch (SQLException sqle) {
+			sqle.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (stmt != null)
+					conn.close();
+			} catch (SQLException se) { }
+			try {
+				if (conn != null)
+					conn.close();
+			} catch (SQLException se) {
+				se.printStackTrace();
+			}
+		}
+		System.out.println("Porous Ware!");
+	} 
+
 }
