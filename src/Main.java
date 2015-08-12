@@ -16,17 +16,6 @@ public class Main extends JFrame {
 		jdbc.itemcatalogue();
 		jdbc.ordercatalogue();
 		jdbc.createcustomerorder();
-		jdbc.createstockorder();
-		jdbc.updateorderschecked();
-		if (OrderData.CheckedOut != false) {
-			jdbc.updateorderspicked();
-		}
-		if (OrderData.Picked != false) {
-			jdbc.updateordersdelivered();
-		}
-		jdbc.updateitemremoval();
-		jdbc.updateitemporous();
+
 	}
-
-
 }

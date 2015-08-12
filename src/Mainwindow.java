@@ -26,7 +26,7 @@ public class Mainwindow extends JFrame {
 		//window size
 		mainFrame.setLayout(new GridLayout(3, 1));
 		headerLabel = new JLabel("",JLabel.CENTER);
-		statusLabel = new JLabel("Click to view Customer orders",JLabel.CENTER);
+		statusLabel = new JLabel("View incoming orders and items catalogue.",JLabel.CENTER);
 		statusLabel.setSize(500, 100);
 
 		mainFrame.addWindowListener(new WindowAdapter() {

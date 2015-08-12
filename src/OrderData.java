@@ -77,7 +77,7 @@ public class OrderData {
 		this.Picked = picked;
 		this.Delivered = delivered;
 
-		System.out.println("------------------------------");
+/*		System.out.println("------------------------------");
 		System.out.println(OrderID);
 		System.out.println(CustomerID);
 		System.out.println(OrderPlaced);
@@ -86,7 +86,9 @@ public class OrderData {
 		System.out.println(CheckedOut);
 		System.out.println(Picked);
 		System.out.println(Delivered);
+
 		System.out.println("------------------------------");
+*/
 	}
 
 }

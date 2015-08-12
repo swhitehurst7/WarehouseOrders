@@ -5,6 +5,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+
 import javax.swing.DefaultListModel;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -20,7 +21,7 @@ public class Item extends JFrame {
 	private JLabel headerLabel;
 	private JPanel controlPanel;
 	private JList itemlist;
-
+	
 	DefaultListModel<String> listModel = new DefaultListModel();
 
 	public Item(){prepareGUI();}
@@ -63,17 +64,27 @@ public class Item extends JFrame {
 	void showEvent() {
 		headerLabel.setText("All the items we sell");
 		//set header for top of window	
-		JButton itemButton = new
-				JButton("Check item catalogue");
+		JButton itemButton = new JButton("Check item catalogue");
 		itemButton.setActionCommand("ITEMS");
 		itemButton.addActionListener(new BCL());
+		JButton stockButton = new JButton("Generate stock order");
+		stockButton.setActionCommand("STOCK");
+		stockButton.addActionListener(new BCL());
+		JButton removalButton = new JButton("Designate item for removal");
+		removalButton.setActionCommand("REMOVE");
+		removalButton.addActionListener(new BCL());
+		JButton porousButton = new JButton("Designate as Porous Ware");
+		porousButton.setActionCommand("POROUS");
+		porousButton.addActionListener(new BCL());
 		controlPanel.add(itemButton);
-		mainFrame.setVisible(true);
+		controlPanel.add(stockButton);
+		controlPanel.add(removalButton);
+		controlPanel.add(porousButton);
 	}
 
 	private class BCL implements ActionListener {
 		public void actionPerformed (ActionEvent ae) {
-
+			JDBC jdbc = new JDBC();
 			//		int index = itemlist.getSelectedIndex();
 			//		listModel.remov(index);
 
@@ -81,9 +92,12 @@ public class Item extends JFrame {
 			switch (command) {
 			case "ITEMS" : displayitems();
 			break;
-			//			case "STOCK" : statusLabel.setText("Test");
-			//			break;
-
+			case "STOCK" : jdbc.createstockorder();
+			break;
+			case "REMOVE" :	jdbc.updateitemremoval();
+			break;
+			case "POROUS" : jdbc.updateitemporous();
+			break;
 			}	
 		}
 

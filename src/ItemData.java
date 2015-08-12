@@ -12,7 +12,7 @@ public class ItemData {
 	//kg?
 	String Dimensions = "width, length, depth";
 	String Manufacturer = "Company, Address";
-	String Location = "Row, shelf, code";
+	static String Location = "Row, shelf, code";
 	//ordered locating system denotes position in warehouse
 	boolean Removal;
 	boolean PorousWare;
@@ -95,7 +95,13 @@ public class ItemData {
 		this.Location = location;
 		this.Removal = removal;
 		this.PorousWare = porousWare;
-
+		
+		String locstring = Location;
+		int x = Character.getNumericValue(locstring.charAt(5));
+		System.out.println("x=" + String.valueOf(x));
+		int y = Character.getNumericValue(locstring.charAt(14));
+		System.out.println("y=" + String.valueOf(y));
+/*
 		System.out.println("------------------------------");
 		System.out.println(ProductID);
 		System.out.println(ProductName);
@@ -108,6 +114,7 @@ public class ItemData {
 		System.out.println(Removal);
 		System.out.println(PorousWare);
 		System.out.println("------------------------------");
+*/	
 	}
-
+	
 }
