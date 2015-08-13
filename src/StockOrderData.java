@@ -2,9 +2,12 @@
 public class StockOrderData {
 
 	String StockOrderID;
+	//unique field for this class - potentially set to auto generate when a stock order is created
 	String ProductID;
 	String Manufacturer;
+	//ascertained from the items data tables
 	int Quantity;
+	
 	
 	public class stockorderfields{
 		
@@ -27,13 +30,12 @@ public class StockOrderData {
 			Manufacturer = manufacturer;
 		}
 
-		}
 		public int getQuantity() {
 			return Quantity;
 		}
 		public void setQuantity(int quantity) {
 			Quantity = quantity;
-		
+		}		
 	}
 	
 		public StockOrderData(String stockorderID, String productID, String manufacturer, int quantity){
@@ -50,7 +52,7 @@ public class StockOrderData {
 			System.out.println(Quantity);
 
 			System.out.println("------------------------------");
-
+//print the list of stock orders (looping)
 		}
 		
 }

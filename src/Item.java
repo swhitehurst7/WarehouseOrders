@@ -39,6 +39,7 @@ public class Item extends JFrame {
 		itemlist.setLayoutOrientation(JList.HORIZONTAL_WRAP);
 		itemlist.setVisibleRowCount(-1);
 		itemlist.setSize(500,100);
+		//JList in which Item data from jdbc is displayed
 
 		JScrollPane listScroller = new JScrollPane(itemlist);
 		listScroller.setPreferredSize(new Dimension(250, 80));
@@ -65,8 +66,12 @@ public class Item extends JFrame {
 		headerLabel.setText("All the items we sell");
 		//set header for top of window	
 		JButton itemButton = new JButton("Check item catalogue");
+		//instantiating of each button
 		itemButton.setActionCommand("ITEMS");
+		//setting action commands
 		itemButton.addActionListener(new BCL());
+		//setting action commands
+		//etc
 		JButton stockButton = new JButton("Generate stock order");
 		stockButton.setActionCommand("STOCK");
 		stockButton.addActionListener(new BCL());
@@ -76,10 +81,12 @@ public class Item extends JFrame {
 		JButton porousButton = new JButton("Designate as Porous Ware");
 		porousButton.setActionCommand("POROUS");
 		porousButton.addActionListener(new BCL());
+		
 		controlPanel.add(itemButton);
 		controlPanel.add(stockButton);
 		controlPanel.add(removalButton);
 		controlPanel.add(porousButton);
+	//adds all buttons consecutively to the the JPanel
 	}
 
 	private class BCL implements ActionListener {
@@ -94,11 +101,13 @@ public class Item extends JFrame {
 			break;
 			case "STOCK" : jdbc.createstockorder();
 			jdbc.stockordercatalogue();
+			//creates and adds the stock order fields to the database and accesses them via the jdbc to ensure they have placed
 			break;
 			case "REMOVE" :	jdbc.updateitemremoval();
 			break;
 			case "POROUS" : jdbc.updateitemporous();
 			break;
+			// Each case corresponds to a button being pressed - runs a function or functions from JDBC class
 			}	
 		}
 
@@ -107,7 +116,7 @@ public class Item extends JFrame {
 			jdbc.itemcatalogue();
 			DefaultListModel<String> listModel = (DefaultListModel<String>) itemlist.getModel();
 			listModel.clear();
-
+// for the case "ITEMS" - accesses the jdbc, lists every element of the item list string (looping)
 			for (String itemliststring: jdbc.itemcatalogue())
 			{
 				listModel.addElement(itemliststring);

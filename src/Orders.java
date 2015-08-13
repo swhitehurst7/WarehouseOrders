@@ -54,11 +54,12 @@ public class Orders extends JFrame {
 		orderList.setLayoutOrientation(JList.HORIZONTAL_WRAP);
 		orderList.setVisibleRowCount(-1);
 		orderList.setSize(300, 100);
-		
+		//configures the JList that displays order data
 		orderList.addMouseListener(mouseListener);
 
 		JScrollPane listScroller = new JScrollPane(orderList);
 		listScroller.setPreferredSize(new Dimension(250, 80));
+		//scroller not currently utilised in window frame
 
 		mainFrame.addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent windowEvent)
@@ -98,11 +99,12 @@ public class Orders extends JFrame {
 		JButton deliveredButton = new JButton("Order confirmation received");
 		deliveredButton.setActionCommand("DELIVER");
 		deliveredButton.addActionListener(new BCL());
-
+//sets all the buttons that appear on the order window - checkbox not utilised
 		controlPanel.add(ordersButton);
 		controlPanel.add(checkedButton);
 		controlPanel.add(pickedButton);
 		controlPanel.add(deliveredButton);
+		//buttons added to JPanel
 		mainFrame.setVisible(true);
 	}
 
@@ -123,6 +125,7 @@ public class Orders extends JFrame {
 				jdbc.updateordersdelivered();
 //			}
 			break;
+			//all cases as a response of button clicks, if statements not currently in use
 			}	
 		}
 	}
@@ -139,10 +142,12 @@ public class Orders extends JFrame {
 		public void mouseClicked(MouseEvent mouseEvent) {
 			JList theList = (JList) mouseEvent.getSource();
 			if (mouseEvent.getClickCount() == 1) {
+				//only needs a single mouse click to be logged
 				int index = theList.locationToIndex(mouseEvent.getPoint());
 				if (index >= 0) {
 					Object o = theList.getModel().getElementAt(index);
 					System.out.println("Clicked on: " + o.toString());
+					//mouse listener to log which item is clicked - from the orders that are displayed in the JList
 				}
 			}
 		}
@@ -155,6 +160,7 @@ ListSelectionListener listselectionlistener = new ListSelectionListener(){
 }
 */	
 	public void displayorders()
+	//run when "Show unfulfilled orders" button selected
 	{JDBC jdbc = new JDBC();
 	jdbc.ordercatalogue();
 	DefaultListModel<String> listModel = (DefaultListModel<String>) orderList.getModel();

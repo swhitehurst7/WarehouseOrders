@@ -14,5 +14,5 @@ public class warehousealgorithm {
 
 	 */	
  
-
+//notes for travelling Ben Back algorithm - items given x and y co-ordinates based on integers parsed from their location strings, placed in ascending order and printed to the user in this order
 }

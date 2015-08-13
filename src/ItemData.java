@@ -12,6 +12,7 @@ public class ItemData {
 	//kg?
 	String Dimensions = "width, length, depth";
 	String Manufacturer = "Company, Address";
+	//dummy is code is only company name for simplicity 
 	static String Location = "Row, shelf, code";
 	//ordered locating system denotes position in warehouse
 	boolean Removal;
@@ -82,7 +83,8 @@ public class ItemData {
 		}
 
 	}
-
+//getters and setters for fields above
+	
 	public ItemData(String productID, String productName, int stock, float price, int weight, String dimensions, String manufacturer, String location, boolean removal, boolean porousWare){
 
 		this.ProductID = productID;
@@ -101,6 +103,7 @@ public class ItemData {
 		System.out.println("x=" + String.valueOf(x));
 		int y = Character.getNumericValue(locstring.charAt(14));
 		System.out.println("y=" + String.valueOf(y));
+		//Travelling Ben Back Algorithm - parses the first and second integers from the String 'Item Location' (all values currently displayed as '-1')
 
 		System.out.println("------------------------------");
 		System.out.println(ProductID);
@@ -114,6 +117,7 @@ public class ItemData {
 		System.out.println(Removal);
 		System.out.println(PorousWare);
 		System.out.println("------------------------------");
+		//prints details for every item in database
 	
 	}
 	

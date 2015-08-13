@@ -17,6 +17,7 @@ public class Main extends JFrame {
 		jdbc.ordercatalogue();
 		jdbc.createcustomerorder();
 		jdbc.refreshfields();
+		//jdbc functions that are run from start i.e. when the main window opens 
 
 	}
 }

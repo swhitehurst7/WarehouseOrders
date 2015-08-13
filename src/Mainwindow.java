@@ -57,6 +57,7 @@ public class Mainwindow extends JFrame {
 		itemsButton.addActionListener(new BCL());
 		controlPanel.add(itemsButton);
 		mainFrame.setVisible(true);
+		//sets order and items buttons
 	}
 
 	private class BCL implements ActionListener {
@@ -71,6 +72,7 @@ public class Mainwindow extends JFrame {
 			case "ITEMS" : Item itm = new Item();
 			itm.showEvent();;
 			break;
+			//order and item buttons open their own seperate windows
 			}
 		}
 	}

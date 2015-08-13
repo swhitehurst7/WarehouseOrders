@@ -65,7 +65,7 @@ public class OrderData {
 		}
 
 	}
-
+//getters and setters for all the values above
 	public OrderData(int orderID, String customerID, String orderPlaced, String orderItems, int quantity, boolean checkedOut, boolean picked, boolean delivered){
 
 		this.OrderID = orderID;
@@ -88,7 +88,7 @@ public class OrderData {
 		System.out.println(Delivered);
 
 		System.out.println("------------------------------");
-
+//looped to print out an entry for each order in the database
 	}
 
 }

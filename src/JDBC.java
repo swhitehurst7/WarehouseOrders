@@ -18,13 +18,14 @@ public class JDBC {
 	public ArrayList<String> itemcatalogue() {
 		ArrayList<ItemData> itemList = new ArrayList<>();
 		ArrayList<String> itemliststring = new ArrayList<String>(0);
+		//makes an array list of strings from the fields shown below
 		Connection conn = null;
 		Statement stmt = null;
 		try {
 			Class.forName( "com.mysql.jdbc.Driver");
 			System.out.println("Connecting to database...");
 			conn = DriverManager.getConnection(DB_URL, USER, PASS);
-
+//access the database -  url, login, etc
 			System.out.println("Creating item catalogue...");
 			stmt = conn.createStatement();
 			String sql2 = "SELECT ProductID, ProductName, Stock, Price, Weight, Dimensions, Manufacturer, Location, Removal, PorousWare FROM items";
@@ -41,6 +42,7 @@ public class JDBC {
 				String located = rs.getString("Location");
 				boolean remove = rs.getBoolean("Removal");
 				boolean porous = rs.getBoolean("PorousWare");
+				//gets data from every field in database table, looped to completion
 				ItemData result = new ItemData(id, name, stock, price, weight, size, madeby, located, remove, porous);
 				itemList.add(result);
 				String itemstring = "Product ID: " + id + " Product Name: " + name + " Stock: " + Integer.toString(stock) + " Price: " + Float.toString(price) + " Weight: " + Integer.toString(weight) + " Dimensions: " + size + " Manufacturer: " + madeby + " Location in Warehouse: " + located + " For removal? " + Boolean.toString(remove) + " Porous Ware? " + Boolean.toString(porous);
@@ -64,6 +66,7 @@ public class JDBC {
 			} catch (SQLException se) {
 				se.printStackTrace();
 			}
+			//here attempts to catch any exceptions, same for all below
 		}
 		System.out.println("Goodbye!");
 		return itemliststring;
@@ -126,13 +129,14 @@ public class JDBC {
 		try {
 			Class.forName( "com.mysql.jdbc.Driver");
 			conn = DriverManager.getConnection(DB_URL, USER, PASS);
-
+//connects to database
 			System.out.println("Formulating customer orders...");
 			stmt = conn.createStatement();
 			stmt.executeUpdate ("INSERT INTO customerorder " + "VALUES (1, 'GNO1', 2)");
 			stmt.executeUpdate ("INSERT INTO customerorder " + "VALUES (1, 'PON2', 1)");
 			stmt.executeUpdate ("INSERT INTO customerorder " + "VALUES (2, 'HAM1', 3)");
 			stmt.executeUpdate ("INSERT INTO customerorder " + "VALUES (2, 'GNO1', 1)");
+			//inputs all above information into customer table (this is called in the Main class when the application is first started)
 			System.out.println("Created customer orders...");
 		}
 		catch (SQLException sqle) {
@@ -167,7 +171,7 @@ public class JDBC {
 			stmt.executeUpdate ("INSERT INTO stockorder " + "VALUES (2, 'HAM1', 'Hammock Hut', 30)");
 			stmt.executeUpdate ("INSERT INTO stockorder " + "VALUES (3, 'PON2', 'Pond Factory', 10)");
 			System.out.println("Created stock orders...");
-			
+			//inputs all above information into stock order table (this is called in the items class when the 'Generate Stock Order' button is selected)
 		}
 		catch (SQLException sqle) {
 			sqle.printStackTrace();
@@ -210,6 +214,7 @@ public class JDBC {
 				stockorderList.add(result);
 				String stockorderstring = "Stock Order ID: " + id + " ProductID: " + product + " Manufacturer: " + made + " Quantity: " + Integer.toString(quant);
 				stockorderliststring.add(stockorderstring);
+				//data pulled from stock order table a a result of button press - checks proper insertion
 			}
 			res.close();
 			
@@ -250,10 +255,11 @@ public class JDBC {
 			stmt.executeUpdate(sql5);
 			String sql6 = "UPDATE orders " + "SET Delivered = 0 WHERE OrderID in (1,2)";
 			stmt.executeUpdate(sql6);
-			String sql7 = "UPDATE items SET Removal = 0 WHERE ProductID = 'GNO1,HAM1,PON2'";
+			String sql7 = "UPDATE items " + "SET Removal = 0 WHERE ProductID = 'GNO1,HAM1,PON2'";
 			stmt.executeUpdate(sql7);
-			String sql8 = "UPDATE items SET PorousWare = 0 WHERE ProductID = 'GNO1,HAM1,PON2'";
+			String sql8 = "UPDATE items " + "SET PorousWare = 0 WHERE ProductID = 'GNO1,HAM1,PON2'";
 			stmt.executeUpdate(sql8);
+			//sets all booleans to false when app is first started, mostly for testing purposes to show fields can be altered to true and info updated in item/order GUI
 
 		}
 		catch (SQLException sqle) {
@@ -274,7 +280,7 @@ public class JDBC {
 		}
 		System.out.println("Checked out!");
 	} 
-	
+	//each of these 'updates' access a boolean for the orders/items specified (setting it to '1' for 'true')
 	public void updateorderschecked() {
 		Connection conn = null;
 		Statement stmt = null;
@@ -287,7 +293,7 @@ public class JDBC {
 			stmt = conn.createStatement();
 			String sql4 = "UPDATE orders " + "SET CheckedOut = 1 WHERE OrderID in (1,2)";
 			stmt.executeUpdate(sql4);
-
+//sets orders with ID of 1 and to 'CheckedOut' i.e. order fulfilment is currently in process
 		}
 		catch (SQLException sqle) {
 			sqle.printStackTrace();
@@ -320,7 +326,8 @@ public class JDBC {
 			stmt = conn.createStatement();
 			String sql5 = "UPDATE orders " + "SET Picked = 1 WHERE OrderID in (1,2)";
 			stmt.executeUpdate(sql5);
-
+// "Picked" is set to true for the above orders when the relevant button is selected in the order window
+// 'if' statements could be moved to here to seperate boolean toggling based on ID
 		}
 		catch (SQLException sqle) {
 			sqle.printStackTrace();
@@ -339,6 +346,7 @@ public class JDBC {
 			}
 		}
 		System.out.println("Picked!");
+		//concise console confirmation proclaiming picking process performed perfectly
 	} 
 
 	public void updateordersdelivered() {
@@ -384,9 +392,9 @@ public class JDBC {
 			stmt = conn.createStatement();
 			System.out.println("Updating items removed...");
 			stmt = conn.createStatement();
-			String sql7 = "UPDATE items SET Removal = 1 WHERE ProductID = 'GNO1,HAM1,PON2'";
+			String sql7 = "UPDATE items " + "SET Removal = 1 WHERE ProductID = 'GNO1,HAM1,PON2'";
 			stmt.executeUpdate(sql7);
-
+//items are designated for removal - value changed to true - rather than deleting them from the table (data retention)
 		}
 		catch (SQLException sqle) {
 			sqle.printStackTrace();
@@ -417,9 +425,9 @@ public class JDBC {
 			stmt = conn.createStatement();
 			System.out.println("Updating porous items...");
 			stmt = conn.createStatement();
-			String sql8 = "UPDATE items SET PorousWare = 1 WHERE ProductID = 'GNO1,HAM1,PON2'";
+			String sql8 = "UPDATE items " + "SET PorousWare = 1 WHERE ProductID = 'GNO1,HAM1,PON2'";
 			stmt.executeUpdate(sql8);
-
+// designates which items requiring glazing process to be performed (resulting from button within 'items' window)
 		}
 		catch (SQLException sqle) {
 			sqle.printStackTrace();
