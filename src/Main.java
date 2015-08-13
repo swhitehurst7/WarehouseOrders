@@ -16,6 +16,7 @@ public class Main extends JFrame {
 		jdbc.itemcatalogue();
 		jdbc.ordercatalogue();
 		jdbc.createcustomerorder();
+		jdbc.refreshfields();
 
 	}
 }

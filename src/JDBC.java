@@ -127,7 +127,7 @@ public class JDBC {
 			Class.forName( "com.mysql.jdbc.Driver");
 			conn = DriverManager.getConnection(DB_URL, USER, PASS);
 
-			System.out.println("Inserting records into the table...");
+			System.out.println("Formulating customer orders...");
 			stmt = conn.createStatement();
 			stmt.executeUpdate ("INSERT INTO customerorder " + "VALUES (1, 'GNO1', 2)");
 			stmt.executeUpdate ("INSERT INTO customerorder " + "VALUES (1, 'PON2', 1)");
@@ -161,11 +161,13 @@ public class JDBC {
 			conn = DriverManager.getConnection(DB_URL, USER, PASS);
 
 			System.out.println("Formulating stock order...");
+			int i = 1;
 			stmt = conn.createStatement();
-			stmt.executeUpdate ("INSERT INTO stockorder " + "VALUES ('GNO1', 'Gnome Inc.', 20)");
-			stmt.executeUpdate ("INSERT INTO stockorder " + "VALUES ('HAM1', 'Hammock Hut', 30)");
-			stmt.executeUpdate ("INSERT INTO stockorder " + "VALUES ('PON2', 'Pond Factory', 10)");
+			stmt.executeUpdate ("INSERT INTO stockorder " + "VALUES (1, 'GNO1', 'Gnome Inc.', 20)");
+			stmt.executeUpdate ("INSERT INTO stockorder " + "VALUES (2, 'HAM1', 'Hammock Hut', 30)");
+			stmt.executeUpdate ("INSERT INTO stockorder " + "VALUES (3, 'PON2', 'Pond Factory', 10)");
 			System.out.println("Created stock orders...");
+			
 		}
 		catch (SQLException sqle) {
 			sqle.printStackTrace();
@@ -185,7 +187,54 @@ public class JDBC {
 		}
 	}
 	
-	public void updateorderschecked() {
+	public ArrayList<String> stockordercatalogue() {
+		ArrayList<StockOrderData> stockorderList = new ArrayList<>();
+		ArrayList<String> stockorderliststring = new ArrayList<String>(0);
+		Connection conn = null;
+		Statement stmt = null;
+		try {
+			Class.forName( "com.mysql.jdbc.Driver");
+			System.out.println("Connecting to database...");
+			conn = DriverManager.getConnection(DB_URL, USER, PASS);
+
+			System.out.println("Retrieving stock levels...");
+			stmt = conn.createStatement();
+			String sqlrs = "SELECT StockOrderID, ProductID, Manufacturer, Quantity FROM stockorder";
+			ResultSet res = stmt.executeQuery(sqlrs);
+			while (res.next()) {
+				String id = res.getString("StockOrderID");
+				String product = res.getString("ProductID");
+				String made = res.getString("Manufacturer");
+				int quant = res.getInt("Quantity");
+				StockOrderData result = new StockOrderData(id, product, made, quant);
+				stockorderList.add(result);
+				String stockorderstring = "Stock Order ID: " + id + " ProductID: " + product + " Manufacturer: " + made + " Quantity: " + Integer.toString(quant);
+				stockorderliststring.add(stockorderstring);
+			}
+			res.close();
+			
+
+		} catch (SQLException sqle) {
+			sqle.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (stmt != null)
+					conn.close();
+			} catch (SQLException se) { }
+			try {
+				if (conn != null)
+					conn.close();
+			} catch (SQLException se) {
+				se.printStackTrace();
+			}
+		}
+		System.out.println("Goodbye!");
+		return stockorderliststring;
+	} 
+	
+	public void refreshfields() {
 		Connection conn = null;
 		Statement stmt = null;
 		try {
@@ -194,6 +243,47 @@ public class JDBC {
 
 			stmt = conn.createStatement();
 			System.out.println("Updating orders checked out...");
+			stmt = conn.createStatement();
+			String sql4 = "UPDATE orders " + "SET CheckedOut = 0 WHERE OrderID in (1,2)";
+			stmt.executeUpdate(sql4);
+			String sql5 = "UPDATE orders " + "SET Picked = 0 WHERE OrderID in (1,2)";
+			stmt.executeUpdate(sql5);
+			String sql6 = "UPDATE orders " + "SET Delivered = 0 WHERE OrderID in (1,2)";
+			stmt.executeUpdate(sql6);
+			String sql7 = "UPDATE items SET Removal = 0 WHERE ProductID = 'GNO1,HAM1,PON2'";
+			stmt.executeUpdate(sql7);
+			String sql8 = "UPDATE items SET PorousWare = 0 WHERE ProductID = 'GNO1,HAM1,PON2'";
+			stmt.executeUpdate(sql8);
+
+		}
+		catch (SQLException sqle) {
+			sqle.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (stmt != null)
+					conn.close();
+			} catch (SQLException se) { }
+			try {
+				if (conn != null)
+					conn.close();
+			} catch (SQLException se) {
+				se.printStackTrace();
+			}
+		}
+		System.out.println("Checked out!");
+	} 
+	
+	public void updateorderschecked() {
+		Connection conn = null;
+		Statement stmt = null;
+		try {
+			Class.forName( "com.mysql.jdbc.Driver");
+			conn = DriverManager.getConnection(DB_URL, USER, PASS);
+
+			stmt = conn.createStatement();
+			System.out.println("System refreshed...");
 			stmt = conn.createStatement();
 			String sql4 = "UPDATE orders " + "SET CheckedOut = 1 WHERE OrderID in (1,2)";
 			stmt.executeUpdate(sql4);
@@ -294,7 +384,7 @@ public class JDBC {
 			stmt = conn.createStatement();
 			System.out.println("Updating items removed...");
 			stmt = conn.createStatement();
-			String sql7 = "UPDATE items SET Removal = 0 WHERE ProductID = 'GNO1,HAM1,PON2'";
+			String sql7 = "UPDATE items SET Removal = 1 WHERE ProductID = 'GNO1,HAM1,PON2'";
 			stmt.executeUpdate(sql7);
 
 		}
@@ -327,7 +417,7 @@ public class JDBC {
 			stmt = conn.createStatement();
 			System.out.println("Updating porous items...");
 			stmt = conn.createStatement();
-			String sql8 = "UPDATE items SET PorousWare = 0 WHERE ProductID = 'GNO1,HAM1,PON2'";
+			String sql8 = "UPDATE items SET PorousWare = 1 WHERE ProductID = 'GNO1,HAM1,PON2'";
 			stmt.executeUpdate(sql8);
 
 		}

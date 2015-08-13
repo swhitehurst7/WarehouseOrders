@@ -101,7 +101,7 @@ public class ItemData {
 		System.out.println("x=" + String.valueOf(x));
 		int y = Character.getNumericValue(locstring.charAt(14));
 		System.out.println("y=" + String.valueOf(y));
-/*
+
 		System.out.println("------------------------------");
 		System.out.println(ProductID);
 		System.out.println(ProductName);
@@ -114,7 +114,7 @@ public class ItemData {
 		System.out.println(Removal);
 		System.out.println(PorousWare);
 		System.out.println("------------------------------");
-*/	
+	
 	}
 	
 }

@@ -93,6 +93,7 @@ public class Item extends JFrame {
 			case "ITEMS" : displayitems();
 			break;
 			case "STOCK" : jdbc.createstockorder();
+			jdbc.stockordercatalogue();
 			break;
 			case "REMOVE" :	jdbc.updateitemremoval();
 			break;
